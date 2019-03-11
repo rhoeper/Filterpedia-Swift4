@@ -7,6 +7,8 @@
 //  Created by Simon Gladman on 20/01/2016.
 //  Copyright © 2016 Simon Gladman. All rights reserved.
 //
+//  Updated by Will Loew-Blosser (racewalkWill) 3/5/2019
+//
 
 import CoreImage
 
@@ -30,41 +32,41 @@ class VHSTrackingLines: CIFilter
         return [
             kCIAttributeFilterDisplayName: "VHS Tracking Lines" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
+                           kCIAttributeClass: "CIImage",
+                           kCIAttributeDisplayName: "Image",
+                           kCIAttributeType: kCIAttributeTypeImage],
             "inputTime": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 8,
-                kCIAttributeDisplayName: "Time",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 2048,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                          kCIAttributeClass: "NSNumber",
+                          kCIAttributeDefault: 8,
+                          kCIAttributeDisplayName: "Time",
+                          kCIAttributeMin: 0,
+                          kCIAttributeSliderMin: 0,
+                          kCIAttributeSliderMax: 2048,
+                          kCIAttributeType: kCIAttributeTypeScalar],
             "inputSpacing": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 50,
-                kCIAttributeDisplayName: "Spacing",
-                kCIAttributeMin: 20,
-                kCIAttributeSliderMin: 20,
-                kCIAttributeSliderMax: 200,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                             kCIAttributeClass: "NSNumber",
+                             kCIAttributeDefault: 50,
+                             kCIAttributeDisplayName: "Spacing",
+                             kCIAttributeMin: 20,
+                             kCIAttributeSliderMin: 20,
+                             kCIAttributeSliderMax: 200,
+                             kCIAttributeType: kCIAttributeTypeScalar],
             "inputStripeHeight": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 0.5,
-                kCIAttributeDisplayName: "Stripe Height",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 1,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                                  kCIAttributeClass: "NSNumber",
+                                  kCIAttributeDefault: 0.5,
+                                  kCIAttributeDisplayName: "Stripe Height",
+                                  kCIAttributeMin: 0,
+                                  kCIAttributeSliderMin: 0,
+                                  kCIAttributeSliderMax: 1,
+                                  kCIAttributeType: kCIAttributeTypeScalar],
             "inputBackgroundNoise": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 0.05,
-                kCIAttributeDisplayName: "Background Noise",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 0.25,
-                kCIAttributeType: kCIAttributeTypeScalar]
+                                     kCIAttributeClass: "NSNumber",
+                                     kCIAttributeDefault: 0.05,
+                                     kCIAttributeDisplayName: "Background Noise",
+                                     kCIAttributeMin: 0,
+                                     kCIAttributeSliderMin: 0,
+                                     kCIAttributeSliderMax: 0.25,
+                                     kCIAttributeType: kCIAttributeTypeScalar]
         ]
     }
     
@@ -79,9 +81,9 @@ class VHSTrackingLines: CIFilter
         
         let noise = CIFilter(name: "CIRandomGenerator")!.outputImage!
             .applyingFilter("CIAffineTransform",
-                parameters: [kCIInputTransformKey: tx])
+                            parameters: [kCIInputTransformKey: tx])
             .applyingFilter("CILanczosScaleTransform",
-                parameters: [kCIInputAspectRatioKey: 5])
+                            parameters: [kCIInputAspectRatioKey: 5])
             .cropped(to: inputImage.extent)
         
         
@@ -119,33 +121,33 @@ class CRTFilter: CIFilter
         return [
             kCIAttributeFilterDisplayName: "CRT Filter" as AnyObject,
             "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
+                           kCIAttributeClass: "CIImage",
+                           kCIAttributeDisplayName: "Image",
+                           kCIAttributeType: kCIAttributeTypeImage],
             "inputPixelWidth": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 8,
-                kCIAttributeDisplayName: "Pixel Width",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 20,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                                kCIAttributeClass: "NSNumber",
+                                kCIAttributeDefault: 8,
+                                kCIAttributeDisplayName: "Pixel Width",
+                                kCIAttributeMin: 0,
+                                kCIAttributeSliderMin: 0,
+                                kCIAttributeSliderMax: 20,
+                                kCIAttributeType: kCIAttributeTypeScalar],
             "inputPixelHeight": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 12,
-                kCIAttributeDisplayName: "Pixel Height",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 20,
-                kCIAttributeType: kCIAttributeTypeScalar],
+                                 kCIAttributeClass: "NSNumber",
+                                 kCIAttributeDefault: 12,
+                                 kCIAttributeDisplayName: "Pixel Height",
+                                 kCIAttributeMin: 0,
+                                 kCIAttributeSliderMin: 0,
+                                 kCIAttributeSliderMax: 20,
+                                 kCIAttributeType: kCIAttributeTypeScalar],
             "inputBend": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 3.2,
-                kCIAttributeDisplayName: "Bend",
-                kCIAttributeMin: 0.5,
-                kCIAttributeSliderMin: 0.5,
-                kCIAttributeSliderMax: 10,
-                kCIAttributeType: kCIAttributeTypeScalar]
+                          kCIAttributeClass: "NSNumber",
+                          kCIAttributeDefault: 3.2,
+                          kCIAttributeDisplayName: "Bend",
+                          kCIAttributeMin: 0.5,
+                          kCIAttributeSliderMin: 0.5,
+                          kCIAttributeSliderMax: 10,
+                          kCIAttributeType: kCIAttributeTypeScalar]
         ]
     }
     
@@ -153,9 +155,9 @@ class CRTFilter: CIFilter
     let crtColorFilter = CRTColorFilter()
     
     let vignette = CIFilter(name: "CIVignette",
-        withInputParameters: [
-            kCIInputIntensityKey: 1.5,
-            kCIInputRadiusKey: 2])!
+                            withInputParameters: [
+                                kCIInputIntensityKey: 1.5,
+                                kCIInputRadiusKey: 2])!
     
     override func setDefaults()
     {
@@ -177,7 +179,7 @@ class CRTFilter: CIFilter
         
         crtColorFilter.inputImage = inputImage
         vignette.setValue(crtColorFilter.outputImage,
-            forKey: kCIInputImageKey)
+                          forKey: kCIInputImageKey)
         crtWarpFilter.inputImage = vignette.outputImage!
         
         return crtWarpFilter.outputImage
@@ -190,19 +192,20 @@ class CRTFilter: CIFilter
         var pixelWidth: CGFloat = 8.0
         var pixelHeight: CGFloat = 12.0
         
-        let crtColorKernel = CIColorKernel(source:
-            "kernel vec4 crtColor(__sample image, float pixelWidth, float pixelHeight) \n" +
+        let crtColorKernel = CIKernel(source:
+            "kernel vec4 crtColor(sampler image, float pixelWidth, float pixelHeight) \n" +
                 "{ \n" +
                 
                 "   int columnIndex = int(mod(samplerCoord(image).x / pixelWidth, 3.0)); \n" +
                 "   int rowIndex = int(mod(samplerCoord(image).y, pixelHeight)); \n" +
-                
+                "   float sampleRed = sample(image,samplerCoord(image)).r; \n" +
+                "   float sampleGreen = sample(image,samplerCoord(image)).g; \n" +
+                "   float sampleBlue = sample(image,samplerCoord(image)).b; \n" +
                 "   float scanlineMultiplier = (rowIndex == 0 || rowIndex == 1) ? 0.3 : 1.0;" +
                 
-                "   float red = (columnIndex == 0) ? image.r : image.r * ((columnIndex == 2) ? 0.3 : 0.2); " +
-                "   float green = (columnIndex == 1) ? image.g : image.g * ((columnIndex == 2) ? 0.3 : 0.2); " +
-                "   float blue = (columnIndex == 2) ? image.b : image.b * 0.2; " +
-                
+                "   float red = (columnIndex == 0) ? sampleRed : sampleRed * ((columnIndex == 2) ? 0.3 : 0.2); " +
+                "   float green = (columnIndex == 1) ? sampleGreen : sampleGreen * ((columnIndex == 2) ? 0.3 : 0.2); " +
+                "   float blue = (columnIndex == 2) ? sampleBlue : sampleBlue * 0.2; " +
                 "   return vec4(red * scanlineMultiplier, green * scanlineMultiplier, blue * scanlineMultiplier, 1.0); \n" +
             "}"
         )
@@ -215,7 +218,12 @@ class CRTFilter: CIFilter
             {
                 let dod = inputImage.extent
                 let args = [inputImage, pixelWidth, pixelHeight] as [Any]
-                return crtColorKernel.apply(extent: dod, arguments: args)
+                return crtColorKernel.apply(extent: dod,
+                                            roiCallback: {
+                                                (index, rect) in
+                                                return rect
+                },
+                                            arguments: args)
             }
             return nil
         }
@@ -241,24 +249,23 @@ class CRTFilter: CIFilter
         )
         
         override var outputImage : CIImage!
+        {
+            if let inputImage = inputImage,
+                let crtWarpKernel = crtWarpKernel
             {
-                if let inputImage = inputImage,
-                    let crtWarpKernel = crtWarpKernel
-                {
-                    let arguments = [CIVector(x: inputImage.extent.size.width, y: inputImage.extent.size.height), bend] as [Any]
-                    let extent = inputImage.extent.insetBy(dx: -1, dy: -1)
-                    
-                    return crtWarpKernel.apply(extent: extent,
-                        roiCallback:
-                        {
-                            (index, rect) in
-                            return rect
-                        },
-                        image: inputImage,
-                        arguments: arguments)
-                }
-                return nil
+                let arguments = [CIVector(x: inputImage.extent.size.width, y: inputImage.extent.size.height), bend] as [Any]
+                let extent = inputImage.extent.insetBy(dx: -1, dy: -1)
+                
+                return crtWarpKernel.apply(extent: extent,
+                                           roiCallback:
+                    {
+                        (index, rect) in
+                        return rect
+                },
+                                           image: inputImage,
+                                           arguments: arguments)
+            }
+            return nil
         }
     }
 }
-

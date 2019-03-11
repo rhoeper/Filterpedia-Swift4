@@ -5,6 +5,8 @@
 //  Created by Simon Gladman on 07/02/2016.
 //  Copyright © 2016 Simon Gladman. All rights reserved.
 //
+//  Updated by Will Loew-Blosser (racewalkWill) 3/5/2019
+//
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
@@ -38,28 +40,28 @@ class EightBit: CIFilter
             kCIAttributeFilterDisplayName: "Eight Bit" as AnyObject,
             
             "inputImage": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "CIImage",
-                kCIAttributeDisplayName: "Image",
-                kCIAttributeType: kCIAttributeTypeImage],
+                           kCIAttributeClass: "CIImage",
+                           kCIAttributeDisplayName: "Image",
+                           kCIAttributeType: kCIAttributeTypeImage],
             
             "inputPaletteIndex": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 4,
-                kCIAttributeDescription: "0: Spectrum (Dim). 1: Spectrum (Bright). 2: VIC-20. 3: C-64. 4: Apple II ",
-                kCIAttributeDisplayName: "Palette Index",
-                kCIAttributeMin: 0,
-                kCIAttributeSliderMin: 0,
-                kCIAttributeSliderMax: 4,
-                kCIAttributeType: kCIAttributeTypeInteger],
+                                  kCIAttributeClass: "NSNumber",
+                                  kCIAttributeDefault: 4,
+                                  kCIAttributeDescription: "0: Spectrum (Dim). 1: Spectrum (Bright). 2: VIC-20. 3: C-64. 4: Apple II ",
+                                  kCIAttributeDisplayName: "Palette Index",
+                                  kCIAttributeMin: 0,
+                                  kCIAttributeSliderMin: 0,
+                                  kCIAttributeSliderMax: 4,
+                                  kCIAttributeType: kCIAttributeTypeInteger],
             
             "inputScale": [kCIAttributeIdentity: 0,
-                kCIAttributeClass: "NSNumber",
-                kCIAttributeDefault: 8,
-                kCIAttributeDisplayName: "Scale",
-                kCIAttributeMin: 1,
-                kCIAttributeSliderMin: 1,
-                kCIAttributeSliderMax: 100,
-                kCIAttributeType: kCIAttributeTypeScalar]
+                           kCIAttributeClass: "NSNumber",
+                           kCIAttributeDefault: 8,
+                           kCIAttributeDisplayName: "Scale",
+                           kCIAttributeMin: 1,
+                           kCIAttributeSliderMin: 1,
+                           kCIAttributeSliderMax: 100,
+                           kCIAttributeType: kCIAttributeTypeScalar]
         ]
     }
     
@@ -74,17 +76,17 @@ class EightBit: CIFilter
         
         let palette = EightBit.palettes[paletteIndex]
         
-        var kernelString = "kernel vec4 thresholdFilter(__sample image)"
+        var kernelString = "kernel vec4 thresholdFilter(sampler image)"
         kernelString += "{ \n"
-        kernelString += "   vec2 uv = samplerCoord(image); \n"
-        kernelString += "   float dist = distance(image.rgb, \(palette.first!.toVectorString())); \n"
+        kernelString += "   vec4 uv = sample(image,samplerCoord(image)); \n"
+        kernelString += "   float dist = distance(uv.rgb, \(palette.first!.toVectorString())); \n"
         kernelString += "   vec3 returnColor = \(palette.first!.toVectorString());\n "
         
         for paletteColor in palette where paletteColor != palette.first!
         {
-            kernelString += "if (distance(image.rgb, \(paletteColor.toVectorString())) < dist) \n"
+            kernelString += "if (distance(uv.rgb, \(paletteColor.toVectorString())) < dist) \n"
             kernelString += "{ \n"
-            kernelString += "   dist = distance(image.rgb, \(paletteColor.toVectorString())); \n"
+            kernelString += "   dist = distance(uv.rgb, \(paletteColor.toVectorString())); \n"
             kernelString += "   returnColor = \(paletteColor.toVectorString()); \n"
             kernelString += "} \n"
         }
@@ -92,22 +94,26 @@ class EightBit: CIFilter
         kernelString += "   return vec4(returnColor, 1.0) ; \n"
         kernelString += "} \n"
         
-        guard let kernel = CIColorKernel(source: kernelString) else
+        guard let kernel = CIKernel(source: kernelString) else
         {
             return nil
         }
-
+        
         let extent = inputImage.extent
         
         
         let final = kernel.apply(extent: extent,
-            arguments: [inputImage.applyingFilter("CIPixellate", parameters: [kCIInputScaleKey: inputScale])])
+                                 roiCallback: {
+                                    (index, rect) in
+                                    return rect
+        },
+                                 arguments: [inputImage.applyingFilter("CIPixellate", parameters: [kCIInputScaleKey: inputScale])])
         
         return final
     }
-
+    
     // MARK: Palettes
-
+    
     // ZX Spectrum Dim
     
     static let dimSpectrumColors = [
@@ -215,4 +221,3 @@ func ==(lhs: RGB, rhs: RGB) -> Bool
 {
     return lhs.toVectorString() == rhs.toVectorString()
 }
-
